@@ -84,6 +84,11 @@ body {
   filter: invert(1);
 }
 
+.nav-logo-kraken {
+  height: 24px;
+  width: auto;
+}
+
 .logo-text {
   font-size: 1.25rem;
   font-weight: 800;
@@ -898,6 +903,10 @@ body {
 
   .nav-logo-img {
     height: 22px;
+  }
+
+  .nav-logo-kraken {
+    height: 18px;
   }
 
   .logo-text {
