@@ -454,8 +454,8 @@ body {
 
 .speaker-img {
   width: 200px;
-  height: 200px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   border-radius: var(--radius-lg);
   margin-bottom: 16px;
   border: 2px solid var(--border);
@@ -836,7 +836,7 @@ body {
 
   .speaker-img {
     width: 150px;
-    height: 150px;
+    height: auto;
   }
 
   .btn {
