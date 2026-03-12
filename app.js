@@ -56,15 +56,24 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// Scroll animations (Intersection Observer)
+// Scroll animations with staggered delays
 const observerOptions = {
   threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
+  rootMargin: '0px 0px -30px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
+      // Stagger children within a grid
+      const parent = entry.target.parentElement;
+      if (parent && (parent.classList.contains('cards-grid') ||
+          parent.classList.contains('ink-grid') ||
+          parent.classList.contains('features-grid'))) {
+        const siblings = Array.from(parent.children);
+        const index = siblings.indexOf(entry.target);
+        entry.target.style.animationDelay = `${index * 0.12}s`;
+      }
       entry.target.classList.add('animate-in');
       observer.unobserve(entry.target);
     }
@@ -72,17 +81,33 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe all cards and sections
-document.querySelectorAll('.card, .ink-card, .feature, .signup-block, .kraken-block').forEach((el) => {
+document.querySelectorAll('.card, .ink-card, .feature, .signup-block, .kraken-block, .section-header').forEach((el) => {
   el.style.opacity = '0';
   observer.observe(el);
 });
 
+// Mouse-follow glow effect on cards
+document.querySelectorAll('.card, .ink-card, .feature').forEach((el) => {
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    el.style.setProperty('--mouse-x', x + '%');
+    el.style.setProperty('--mouse-y', y + '%');
+  });
+});
+
 // Navbar scroll effect
 const navbar = document.querySelector('.navbar');
+let lastScroll = 0;
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
+  const scrollY = window.scrollY;
+  if (scrollY > 50) {
     navbar.style.background = 'rgba(13, 11, 20, 0.95)';
+    navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
   } else {
     navbar.style.background = 'rgba(13, 11, 20, 0.85)';
+    navbar.style.boxShadow = 'none';
   }
+  lastScroll = scrollY;
 });
